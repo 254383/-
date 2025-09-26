@@ -1,0 +1,586 @@
+、<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寝室螃蟹宴邀请函</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #5a3921;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .invitation-card {
+            width: 100%;
+            max-width: 500px;
+            background-color: #fff9f0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .crab-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #d2691e;
+            border-left: 4px solid #ff7e5f;
+            padding-left: 10px;
+        }
+        
+        .image-slider {
+            position: relative;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slider-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .slider-image.active {
+            display: block;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .slider-dot.active {
+            background-color: white;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .info-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ffd8b8;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #d2691e;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        
+        .countdown-item {
+            flex: 1;
+        }
+        
+        .countdown-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff7e5f;
+        }
+        
+        .countdown-label {
+            font-size: 12px;
+            color: #8d6e63;
+        }
+        
+        .gift-section {
+            background-color: #f8f4e9;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .gift-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #ffb74d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            font-size: 28px;
+            color: white;
+        }
+        
+        .gift-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .reveal-btn {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 126, 95, 0.3);
+        }
+        
+        .reveal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 126, 95, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f4e9;
+            border-top: 1px solid #e8e0d0;
+        }
+        
+        .music-control {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fff3e0;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .music-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        /* 动物落下动画 */
+        .falling-animal {
+            position: fixed;
+            font-size: 30px;
+            z-index: 5;
+            pointer-events: none;
+            animation: falling linear forwards;
+            opacity: 0.8;
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 螃蟹特殊动画 */
+        .crab-animation {
+            animation: falling 8s linear forwards, crabMove 0.5s infinite alternate;
+        }
+        
+        @keyframes crabMove {
+            0% { transform: translateX(0px) rotate(0deg); }
+            100% { transform: translateX(10px) rotate(5deg); }
+        }
+        
+        /* 鱼类特殊动画 */
+        .fish-animation {
+            animation: falling 6s linear forwards, fishMove 0.3s infinite alternate;
+        }
+        
+        @keyframes fishMove {
+            0% { transform: translateX(0px) scaleX(1); }
+            100% { transform: translateX(5px) scaleX(1.1); }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .image-slider {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-card">
+        <div class="header">
+            <div class="crab-icon">🦀</div>
+            <h1>寝室螃蟹宴邀请函</h1>
+            <p class="subtitle">诚邀大家吃三点好的！</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">宴会预览</h2>
+                <div class="image-slider">
+                    <!-- 本地图片路径，请确保images文件夹中有这些图片 -->
+                    <img src="images/crab1.jpg" alt="螃蟹大餐" class="slider-image active">
+                    <img src="images/crab2.jpg" alt="温馨寝室" class="slider-image">
+                    <img src="images/crab3.jpg" alt="准备过程" class="slider-image">
+                    <img src="images/crab4.jpg" alt="惊喜礼物" class="slider-image">
+                    
+                    <div class="slider-nav">
+                        <div class="slider-dot active" data-index="0"></div>
+                        <div class="slider-dot" data-index="1"></div>
+                        <div class="slider-dot" data-index="2"></div>
+                        <div class="slider-dot" data-index="3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">宴会详情</h2>
+                
+                <div class="info-item">
+                    <div class="info-icon">📅</div>
+                    <div>
+                        <strong>时间：</strong>2025年9月27日 周六晚上 18:30
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div>
+                        <strong>地点：</strong>9栋 1108# 寝室
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">👥</div>
+                    <div>
+                        <strong>参与人员：</strong>5位小伙伴 + 我
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🍽️</div>
+                    <div>
+                        <strong>宴会内容：</strong>新鲜大闸蟹、特色小菜、饮料
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🎲</div>
+                    <div>
+                        <strong>娱乐：</strong>麻将、桌游
+                    </div>
+                </div>
+            </div>
+            
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">0</div>
+                    <div class="countdown-label">天</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">0</div>
+                    <div class="countdown-label">时</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">0</div>
+                    <div class="countdown-label">分</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">0</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            </div>
+            
+            <div class="gift-section">
+                <div class="gift-icon">🎁</div>
+                <p class="gift-text">为大家准备了神秘小礼物！</p>
+                <button class="reveal-btn" id="revealBtn">点击揭晓</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>期待大家的到来，共度美蟹蟹时光！</p>
+            <div class="music-control" id="musicControl">
+                <span class="music-icon">🎵</span>
+                <span>背景音乐</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 本地背景音乐 -->
+    <audio id="backgroundMusic" loop>
+        <source src="music/background-music.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+
+    <script>
+        // 图片轮播功能
+        const sliderImages = document.querySelectorAll('.slider-image');
+        const sliderDots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            sliderImages.forEach(img => img.classList.remove('active'));
+            sliderDots.forEach(dot => dot.classList.remove('active'));
+            
+            sliderImages[index].classList.add('active');
+            sliderDots[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        sliderDots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                showSlide(index);
+            });
+        });
+        
+        // 自动轮播
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % sliderImages.length;
+            showSlide(currentSlide);
+        }, 4000);
+        
+        // 倒计时功能
+        function updateCountdown() {
+            const targetDate = new Date('2025-09-27T18:30:00');
+            const now = new Date();
+            const timeDiff = targetDate - now;
+            
+            if (timeDiff > 0) {
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            } else {
+                document.querySelector('.countdown').innerHTML = '<div style="text-align:center;width:100%;">螃蟹宴已经开始，欢迎光临！</div>';
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // 初始化
+        
+        // 礼物揭晓功能
+        document.getElementById('revealBtn').addEventListener('click', function() {
+            const gifts = [
+                "小盲盒一个",
+                "美味蟹四只",
+                "温馨相框+合影",
+                "小零食若干"
+            ];
+            
+            const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
+            this.textContent = randomGift;
+            this.style.backgroundColor = '#4caf50';
+            this.style.cursor = 'default';
+            
+            // 创建飘落的心形效果
+            createHearts();
+        });
+        
+        // 创建心形飘落效果
+        function createHearts() {
+            const colors = ['#ff6b6b', '#ffa726', '#66bb6a', '#29b6f6', '#ab47bc'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤';
+                heart.style.position = 'fixed';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '-30px';
+                heart.style.zIndex = '9999';
+                heart.style.pointerEvents = 'none';
+                heart.style.opacity = '0.7';
+                
+                document.body.appendChild(heart);
+                
+                // 动画
+                const animation = heart.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 0.7 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.42, 0, 0.58, 1)'
+                });
+                
+                animation.onfinish = () => heart.remove();
+            }
+        }
+        
+        // 动物落下效果
+        function createFallingAnimals() {
+            const animals = ['🦀', '🐟', '🐠', '🦐', '🐚', '🌟', '❤️'];
+            const animalTypes = ['crab', 'fish', 'normal', 'normal', 'normal', 'normal', 'normal'];
+            
+            // 每3秒创建一批动物
+            setInterval(() => {
+                const animalCount = Math.floor(Math.random() * 3) + 2; // 每次2-4个动物
+                
+                for (let i = 0; i < animalCount; i++) {
+                    const index = Math.floor(Math.random() * animals.length);
+                    const animal = document.createElement('div');
+                    animal.innerHTML = animals[index];
+                    animal.className = 'falling-animal';
+                    
+                    // 根据动物类型添加特殊动画
+                    if (animalTypes[index] === 'crab') {
+                        animal.classList.add('crab-animation');
+                    } else if (animalTypes[index] === 'fish') {
+                        animal.classList.add('fish-animation');
+                    }
+                    
+                    // 随机位置和大小
+                    const size = Math.random() * 25 + 20; // 20-45px
+                    animal.style.fontSize = size + 'px';
+                    animal.style.left = Math.random() * 100 + 'vw';
+                    
+                    // 随机动画时长
+                    const duration = Math.random() * 5 + 5; // 5-10秒
+                    animal.style.animationDuration = duration + 's';
+                    
+                    document.body.appendChild(animal);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        if (animal.parentNode) {
+                            animal.parentNode.removeChild(animal);
+                        }
+                    }, duration * 1000);
+                }
+            }, 3000);
+        }
+        
+        // 页面加载完成后启动动物动画
+        window.addEventListener('load', createFallingAnimals);
+        
+        // 背景音乐控制
+        const musicControl = document.getElementById('musicControl');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        let isPlaying = false;
+        
+        // 添加用户交互后自动播放音乐
+        document.body.addEventListener('click', function initAudio() {
+            // 移除事件监听，只执行一次
+            document.body.removeEventListener('click', initAudio);
+            
+            // 尝试播放音乐（需要用户交互后）
+            backgroundMusic.play().then(() => {
+                isPlaying = true;
+                musicControl.querySelector('.music-icon').textContent = '🎶';
+                musicControl.style.opacity = '1';
+            }).catch(e => {
+                console.log('自动播放失败，需要用户手动点击');
+            });
+        });
+        
+        musicControl.addEventListener('click', function(event) {
+            event.stopPropagation(); // 防止触发上面的body点击事件
+            
+            if (isPlaying) {
+                backgroundMusic.pause();
+                this.querySelector('.music-icon').textContent = '🎵';
+                this.style.opacity = '0.7';
+            } else {
+                backgroundMusic.play().catch(e => {
+                    alert('音乐播放失败，请检查音乐文件路径');
+                });
+                this.querySelector('.music-icon').textContent = '🎶';
+                this.style.opacity = '1';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
