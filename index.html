@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寝室螃蟹宴邀请函 - 支持自定义内容</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #5a3921;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 背景动物装饰 */
+        .animal-decoration {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: float 10s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        .card-animal {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.6;
+            z-index: 2;
+        }
+        
+        .invitation-card {
+            width: 100%;
+            max-width: 650px;
+            background-color: #fff9f0;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header-animal {
+            position: absolute;
+            top: 25px;
+            font-size: 22px;
+        }
+        
+        .header-animal.left {
+            left: 25px;
+        }
+        
+        .header-animal.right {
+            right: 25px;
+        }
+        
+        .crab-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 22px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: white;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .crab-icon::before, .crab-icon::after {
+            content: "🦀";
+            position: absolute;
+            top: 50%;
+            font-size: 24px;
+        }
+        
+        .crab-icon::before {
+            left: -22px;
+            transform: translateY(-50%) rotate(-30deg);
+        }
+        
+        .crab-icon::after {
+            right: -22px;
+            transform: translateY(-50%) rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 34px;
+            color: white;
+            margin-bottom: 14px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 19px;
+            letter-spacing: 0.3px;
+        }
+        
+        .content {
+            padding: 35px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .section-animal {
+            position: absolute;
+            font-size: 18px;
+            opacity: 0.5;
+        }
+        
+        .section-animal.top-left {
+            top: -8px;
+            left: -3px;
+        }
+        
+        .section-animal.bottom-right {
+            bottom: -8px;
+            right: -3px;
+        }
+        
+        .section-title {
+            font-size: 23px;
+            margin-bottom: 20px;
+            color: #d2691e;
+            border-left: 4px solid #ff7e5f;
+            padding-left: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .section-title::before {
+            font-size: 28px;
+        }
+        
+        .section-title:nth-of-type(1)::before {
+            content: "🖼️";
+        }
+        
+        .section-title:nth-of-type(2)::before {
+            content: "📝";
+        }
+        
+        .image-slider {
+            position: relative;
+            height: 280px;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slider-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        
+        .slider-image.active {
+            opacity: 1;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider-dot.active {
+            background-color: white;
+            transform: scale(1.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 上传区域样式 */
+        .upload-section {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f4e9;
+            border-radius: 10px;
+            border: 2px dashed #ffb74d;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 126, 95, 0.3);
+        }
+        
+        #imageInput, #musicInput {
+            display: none;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ffd8b8;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 22px;
+            padding: 12px 15px;
+            border-radius: 14px;
+            transition: background-color 0.3s;
+            font-size: 18px;
+        }
+        
+        .info-item:hover {
+            background-color: rgba(255, 248, 235, 0.8);
+        }
+        
+        .info-icon {
+            width: 36px;
+            height: 36px;
+            background-color: #ffd8b8;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 14px;
+            font-size: 19px;
+            color: #d2691e;
+            box-shadow: 0 2px 5px rgba(255, 216, 184, 0.3);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            margin-top: 30px;
+            background-color: #fff3e0;
+            padding: 20px;
+            border-radius: 18px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(255, 243, 224, 0.5);
+        }
+        
+        .countdown::before {
+            content: "⏰";
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+        }
+        
+        .countdown-item {
+            flex: 1;
+            padding: 0 10px;
+        }
+        
+        .countdown-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #ff7e5f;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-label {
+            font-size: 15px;
+            color: #8d6e63;
+        }
+        
+        .gift-section {
+            background-color: #f8f4e9;
+            padding: 22px;
+            border-radius: 18px;
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+            border: 2px dashed #ffb74d;
+            box-shadow: 0 4px 12px rgba(248, 244, 233, 0.5);
+        }
+        
+        .gift-animal {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.7;
+        }
+        
+        .gift-animal.top-left {
+            top: 12px;
+            left: 18px;
+        }
+        
+        .gift-animal.bottom-right {
+            bottom: 12px;
+            right: 18px;
+        }
+        
+        .gift-icon {
+            width: 72px;
+            height: 72px;
+            background-color: #ffb74d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 34px;
+            color: white;
+            animation: pulse 2.5s infinite;
+            box-shadow: 0 4px 10px rgba(255, 183, 77, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+        
+        .gift-text {
+            font-size: 19px;
+            margin-bottom: 15px;
+            color: #5a3921;
+        }
+        
+        .reveal-btn {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 35px;
+            font-size: 19px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 12px rgba(255, 126, 95, 0.3);
+        }
+        
+        .reveal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(255, 126, 95, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 28px;
+            background-color: #f8f4e9;
+            border-top: 1px solid #e8e0d0;
+            position: relative;
+        }
+        
+        .footer-animal {
+            font-size: 20px;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+        
+        .footer-text {
+            font-size: 19px;
+            color: #5a3921;
+        }
+        
+        .music-control {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fff3e0;
+            padding: 11px 22px;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-top: 18px;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(255, 243, 224, 0.5);
+        }
+        
+        .music-control:hover {
+            transform: scale(1.05);
+            background-color: #ffe8cc;
+        }
+        
+        .music-icon {
+            margin-right: 12px;
+            font-size: 21px;
+        }
+        
+        @media (max-width: 480px) {
+            .invitation-card {
+                max-width: 96%;
+                border-radius: 20px;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            .header {
+                padding: 28px 20px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 17px;
+            }
+            
+            .crab-icon {
+                width: 85px;
+                height: 85px;
+                font-size: 42px;
+                margin-bottom: 18px;
+            }
+            
+            .image-slider {
+                height: 180px;
+                border-radius: 15px;
+            }
+            
+            .section-title {
+                font-size: 21px;
+                margin-bottom: 18px;
+            }
+            
+            .info-item {
+                font-size: 16px;
+                margin-bottom: 18px;
+                padding: 10px 12px;
+            }
+            
+            .info-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 17px;
+                margin-right: 12px;
+            }
+            
+            .countdown {
+                padding: 16px;
+                margin-top: 25px;
+            }
+            
+            .countdown-number {
+                font-size: 24px;
+            }
+            
+            .gift-section {
+                padding: 18px;
+                margin-top: 25px;
+            }
+            
+            .gift-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 30px;
+                margin-bottom: 15px;
+            }
+            
+            .gift-text {
+                font-size: 17px;
+            }
+            
+            .reveal-btn {
+                padding: 11px 24px;
+                font-size: 17px;
+            }
+            
+            .footer {
+                padding: 22px;
+            }
+            
+            .footer-text {
+                font-size: 17px;
+            }
+            
+            .music-control {
+                padding: 10px 20px;
+                font-size: 16px;
+                margin-top: 15px;
+            }
+            
+            .animal-decoration {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景动物装饰 -->
+    <div class="animal-decoration" style="top: 10%; left: 6%; font-size: 38px; animation-delay: 0s;">🐰</div>
+    <div class="animal-decoration" style="top: 30%; right: 7%; font-size: 32px; animation-delay: 1.5s;">🐱</div>
+    <div class="animal-decoration" style="bottom: 15%; left: 9%; font-size: 35px; animation-delay: 2.5s;">🐶</div>
+    <div class="animal-decoration" style="bottom: 30%; right: 6%; font-size: 30px; animation-delay: 1s;">🐹</div>
+    <div class="animal-decoration" style="top: 50%; left: 4%; font-size: 28px; animation-delay: 0.5s;">🦊</div>
+    
+    <div class="invitation-card">
+        <!-- 卡片角落点缀 -->
+        <div class="card-animal" style="top: 15px; left: 15px;">🐾</div>
+        <div class="card-animal" style="top: 15px; right: 15px;">🐾</div>
+        <div class="card-animal" style="bottom: 15px; left: 15px;">🐾</div>
+        <div class="card-animal" style="bottom: 15px; right: 15px;">🐾</div>
+        
+        <div class="header">
+            <div class="header-animal left">🐱</div>
+            <div class="header-animal right">🐰</div>
+            
+            <div class="crab-icon">🦀</div>
+            <h1>寝室螃蟹宴邀请函</h1>
+            <p class="subtitle">诚邀大家吃三点好的！</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-animal top-left">🦝</div>
+                <h2 class="section-title">宴会预览</h2>
+                <div class="image-slider">
+                    <!-- 默认图片 -->
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="螃蟹大餐" class="slider-image active">
+                    <img src="https://images.unsplash.com/photo-1555854871-d4b0c2be3c0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="温馨寝室" class="slider-image">
+                    <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="惊喜礼物" class="slider-image">
+                    <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="美食特写" class="slider-image">
+                    
+                    <div class="slider-nav">
+                        <div class="slider-dot active" data-index="0"></div>
+                        <div class="slider-dot" data-index="1"></div>
+                        <div class="slider-dot" data-index="2"></div>
+                        <div class="slider-dot" data-index="3"></div>
+                    </div>
+                </div>
+                
+                <!-- 图片上传区域 -->
+                <div class="upload-section">
+                    <p>上传您的宴会图片（最多4张）</p>
+                    <label for="imageInput" class="upload-btn">选择图片</label>
+                    <input type="file" id="imageInput" accept="image/*" multiple>
+                    <div class="preview-container" id="previewContainer"></div>
+                </div>
+                
+                <div class="section-animal bottom-right">🦦</div>
+            </div>
+            
+            <div class="section">
+                <div class="section-animal top-left">🦔</div>
+                <h2 class="section-title">宴会详情</h2>
+                
+                <div class="info-item">
+                    <div class="info-icon">📅</div>
+                    <div>
+                        <strong>时间：</strong>
+                        <span>2025年9月27日 周六晚上 18:30</span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div>
+                        <strong>地点：</strong>
+                        <span>9栋 1108# 寝室</span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">👥</div>
+                    <div>
+                        <strong>参与人员：</strong>
+                        <span>5位小伙伴 + 我</span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🍽️</div>
+                    <div>
+                        <strong>宴会内容：</strong>
+                        <span>新鲜大闸蟹、特色小菜、饮料</span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">🎲</div>
+                    <div>
+                        <strong>娱乐：</strong>
+                        <span>麻将、桌游</span>
+                    </div>
+                </div>
+                <div class="section-animal bottom-right">🐾</div>
+            </div>
+            
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">0</div>
+                    <div class="countdown-label">天</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">0</div>
+                    <div class="countdown-label">时</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">0</div>
+                    <div class="countdown-label">分</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">0</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            </div>
+            
+            <div class="gift-section">
+                <div class="gift-animal top-left">🐰</div>
+                <div class="gift-icon">🎁</div>
+                <p class="gift-text">为大家准备了神秘小礼物！</p>
+                <button class="reveal-btn" id="revealBtn">点击揭晓</button>
+                <div class="gift-animal bottom-right">🐶</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-text">
+                <span class="footer-animal">🐾</span>
+                期待您的到来，共度美好时光！
+                <span class="footer-animal">🐾</span>
+            </p>
+            
+            <!-- 音乐上传和控制区域 -->
+            <div class="upload-section" style="margin-top: 15px; padding: 10px;">
+                <p>上传您的背景音乐</p>
+                <label for="musicInput" class="upload-btn">选择音乐</label>
+                <input type="file" id="musicInput" accept="audio/*">
+            </div>
+            
+            <div class="music-control" id="musicControl">
+                <span class="music-icon">🎵</span>
+                <span>背景音乐</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 固定宴会时间
+        const targetDate = new Date('2025-09-27T18:30:00');
+        // 礼物列表
+        const gifts = [
+            "小盲盒一个",
+            "温馨相框+合影",
+            "手写感谢卡片",
+            "惊喜小零食"
+        ];
+        
+        // 存储上传的图片和音乐
+        let uploadedImages = [];
+        let uploadedMusic = null;
+        
+        // 图片轮播功能
+        const sliderImages = document.querySelectorAll('.slider-image');
+        const sliderDots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        let sliderInterval;
+        
+        // 初始化轮播图
+        function initSlider() {
+            const slider = document.querySelector('.image-slider');
+            const sliderNav = document.querySelector('.slider-nav');
+            
+            // 清空现有内容
+            slider.innerHTML = '';
+            sliderNav.innerHTML = '';
+            
+            // 确定使用的图片（优先使用上传的图片）
+            const imagesToUse = uploadedImages.length > 0 ? uploadedImages : [
+                'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1555854871-d4b0c2be3c0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+            ];
+            
+            // 创建图片元素
+            imagesToUse.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.classList.add('slider-image');
+                if (index === 0) img.classList.add('active');
+                slider.appendChild(img);
+                
+                // 创建导航点
+                const dot = document.createElement('div');
+                dot.classList.add('slider-dot');
+                if (index === 0) dot.classList.add('active');
+                dot.setAttribute('data-index', index);
+                dot.addEventListener('click', () => showSlide(index));
+                sliderNav.appendChild(dot);
+            });
+            
+            // 重新获取元素引用
+            const newSliderImages = document.querySelectorAll('.slider-image');
+            const newSliderDots = document.querySelectorAll('.slider-dot');
+            
+            // 开始自动轮播
+            startAutoSlide(newSliderImages, newSliderDots);
+        }
+        
+        // 显示指定幻灯片
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slider-image');
+            const dots = document.querySelectorAll('.slider-dot');
+            
+            if (slides.length === 0) return;
+            
+            // 更新当前索引
+            currentSlide = index % slides.length;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            
+            // 更新幻灯片
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            
+            // 更新导航点
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // 开始自动轮播
+        function startAutoSlide(slides, dots) {
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 4000);
+        }
+        
+        // 处理图片上传
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const previewContainer = document.getElementById('previewContainer');
+            
+            if (files.length > 0) {
+                previewContainer.innerHTML = '';
+                uploadedImages = [];
+                
+                for (let i = 0; i < files.length && i < 4; i++) { // 限制最多4张图片
+                    const file = files[i];
+                    
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            // 添加到上传图片数组
+                            uploadedImages.push(e.target.result);
+                            
+                            // 创建预览图
+                            const previewImg = document.createElement('img');
+                            previewImg.src = e.target.result;
+                            previewImg.classList.add('preview-image');
+                            previewContainer.appendChild(previewImg);
+                            
+                            // 重新初始化轮播
+                            initSlider();
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+        });
+        
+        // 处理音乐上传
+        document.getElementById('musicInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file && file.type.match('audio.*')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    uploadedMusic = e.target.result;
+                    // 如果音乐正在播放，重新加载
+                    if (isPlaying) {
+                        audio.pause();
+                        audio.src = uploadedMusic;
+                        audio.play().catch(() => {
+                            console.log('音乐播放需要用户交互');
+                        });
+                    } else {
+                        audio.src = uploadedMusic;
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // 初始化轮播图
+        initSlider();
+        
+        // 倒计时功能
+        function updateCountdown() {
+            const now = new Date();
+            const timeDiff = targetDate - now;
+            
+            if (timeDiff > 0) {
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.querySelector('.countdown').innerHTML = 
+                    '<div style="text-align:center;width:100%;font-size:18px;color:#ff7e5f;">螃蟹宴已经开始，欢迎光临！</div>';
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // 礼物揭晓功能
+        document.getElementById('revealBtn').addEventListener('click', function() {
+            const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
+            this.textContent = randomGift;
+            this.style.backgroundColor = '#4caf50';
+            this.style.cursor = 'default';
+            this.disabled = true;
+            
+            // 创建飘落动物特效
+            createFallingAnimals();
+        });
+        
+        // 飘落动物特效
+        function createFallingAnimals() {
+            const animals = ['🐰', '🐱', '🐶', '🐹', '🦊', '🦝', '🦔', '🐾'];
+            
+            for (let i = 0; i < 15; i++) {
+                const animal = document.createElement('div');
+                animal.innerHTML = animals[Math.floor(Math.random() * animals.length)];
+                animal.style.position = 'fixed';
+                animal.style.fontSize = `${Math.random() * 15 + 12}px`;
+                animal.style.left = `${Math.random() * 100}vw`;
+                animal.style.top = '-30px';
+                animal.style.zIndex = '9999';
+                animal.style.pointerEvents = 'none';
+                animal.style.opacity = '0.8';
+                
+                document.body.appendChild(animal);
+                
+                // 下落动画
+                const animation = animal.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 0.8 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.42, 0, 0.58, 1)'
+                });
+                
+                animation.onfinish = () => animal.remove();
+            }
+        }
+        
+        // 背景音乐控制
+        const musicControl = document.getElementById('musicControl');
+        let isPlaying = false;
+        const audio = new Audio();
+        audio.loop = true;
+        
+        // 设置默认音乐
+        audio.src = 'https://assets.mixkit.co/music/preview/mixkit-dreamy-night-1162.mp3';
+        
+        musicControl.addEventListener('click', function() {
+            if (isPlaying) {
+                audio.pause();
+                this.querySelector('.music-icon').textContent = '🎵';
+                this.style.opacity = '0.7';
+            } else {
+                audio.play().catch(() => {
+                    alert('请先点击页面任意位置，再尝试播放音乐～');
+                });
+                this.querySelector('.music-icon').textContent = '🎶';
+                this.style.opacity = '1';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
